@@ -1,0 +1,44 @@
+{
+    "asteroid": [
+        {
+            "name": "rock_small",
+            "type": 5,
+            "image": "images/celestialObjects/asteroid/rock_small.png",
+            "properties": {
+                "asteroid_type": 1,
+                "min": 100,
+                "max": 250
+            }
+        },
+        {
+            "name": "rock_medium",
+            "type": 5,
+            "image": "images/celestialObjects/asteroid/rock_medium.png",
+            "properties": {
+                "asteroid_type": 1,
+                "min": 250,
+                "max": 400
+            }
+        },
+        {
+            "name": "rock_large",
+            "type": 5,
+            "image": "images/celestialObjects/asteroid/rock_large.png",
+            "properties": {
+                "asteroid_type": 1,
+                "min": 400,
+                "max": 1000
+            }
+        },
+        {
+            "name": "gold",
+            "type": 5,
+            "image": "images/celestialObjects/asteroid/gold.png",
+            "properties": {
+                "asteroid_type": 3,
+                "min": 100,
+                "max": 250
+            }
+        }
+    ]
+}
