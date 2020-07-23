@@ -2,12 +2,18 @@
 import pygame
 from pygame.locals import *
 
-"""This scene class is a pygame rectangle and can handle event, loop, render"""
-class Scene(Rect):
+
+class Scene(pygame.Rect):
+    """This scene class is a pygame rectangle and can handle event, loop, render"""
     name = "default scene"
 
     def __init__(self):
         self.next = self
+
+        print("Init " + self.name + " scene")
+
+    def on_init(self):
+        raise Exception('Scene on_init function needs to be override')
 
     def on_event(self, events):
         raise Exception('Scene on_event function needs to be override')

@@ -4,13 +4,13 @@ from datetime import datetime
 import pygame
 from pygame.locals import *
 
-from Colors import Colors
 from SceneSplash import SceneSplash
 from SceneMenu import SceneMenu
+from LibraryManager import LibraryManager
 
 
 class App:
-    windowWidth = 1152
+    windowWidth = 1152 #center =
     windowHeight = 768
     FPS = 35
 
@@ -39,47 +39,60 @@ class App:
         # Load scenes
         scene_splash = SceneSplash()
         scene_splash.size = (self.windowWidth, self.windowHeight)
+        scene_splash.on_init()
         self.scenes["welcome"] = scene_splash
         self.active_scene = scene_splash
 
         scene_menu = SceneMenu()
         scene_menu.size = (self.windowWidth, self.windowHeight)
+        scene_menu.on_init()
         self.scenes["menu"] = scene_menu
+
+        #TEMP
+        lm = LibraryManager()
 
     def on_event(self, event):
         """Function designed to hanlde events such as user input (keyboard, mouse, etc"""
 
         # Quit Event
         if event.type == pygame.QUIT:
+            print ("Event Quit")
             self._running = False
+        elif event.type == pygame.USEREVENT:
+            #Switch scene event
+            if "goto" in event.__dict__:
+                # Scene on_event
+                print("Goto : " + event.__dict__["goto"])
 
-        # Scene on_event
-        if self.active_scene != None:
+        #Event on active Scene
+        if self.active_scene is not None:
             self.active_scene.on_event(event)
 
     def on_loop(self):
         """Function to specify the game logic"""
 
         # Scene on_loop
-        if self.active_scene != None:
+        if self.active_scene is not None:
             self.active_scene.on_loop()
 
             #Active scene is cleared
-            if self.active_scene.next == None:
+            if self.active_scene.next is None:
                 if self.active_scene.name == "splash":
+                    print("Switch to Menu Scene")
                     self.active_scene = self.scenes["menu"]
 
             self.active_scene = self.active_scene.next
 
             #Quit application if no more active scenes
-            if self.active_scene == None:
+            if self.active_scene is None:
+                print ("quit app, no more scene to render")
                 self._running = False
 
     def on_render(self):
         """Function specialized for surface rendering only"""
 
         # Scene on_render
-        if self.active_scene != None:
+        if self.active_scene is not None:
             self.active_scene.on_render(self._display_surf)
 
     def on_cleanup(self):
@@ -89,11 +102,10 @@ class App:
     def on_execute(self):
         """Main Execute function and main loop, calls on_init, on_event, on_loop, on_logic  """
         # Init application
-        if self.on_init() == False:
-            self._running = False
+        self.on_init()
 
         # Main Loop
-        while (self._running):
+        while self._running:
             # Handle Events
             for event in pygame.event.get():
                 self.on_event(event)
