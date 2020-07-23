@@ -4,19 +4,26 @@ from datetime import datetime
 import pygame
 from pygame.locals import *
 
+from pygame_framework.MenuTheme import MenuTheme
+from pygame_framework.MenuHOrientation import MenuHOrientation
+from pygame_framework.MenuVOrientation import MenuVOrientation
+
 from SceneSplash import SceneSplash
 from SceneMenu import SceneMenu
 from LibraryManager import LibraryManager
 
 
 class App:
-    windowWidth = 1152
-    windowHeight = 768
     FPS = 35
 
     # Handle scenes
     scenes = dict()
     active_scene = None
+
+    theme = MenuTheme()
+
+    v_orientation = MenuVOrientation.CENTER
+    h_orientation = MenuHOrientation.RIGHT
 
     def __init__(self):
         """ App object initialization function, here you set variables default values"""
@@ -25,12 +32,15 @@ class App:
         self.image = None
         self.frame_per_sec = None
 
+
     def on_init(self):
         """Game initialisation function, here you load scenes, images, sounds, etc."""
 
+        full_size = (self.theme["window_width"], self.theme["window_height"])
+
         # pygame initialisation
         pygame.init()
-        self._display_surf = pygame.display.set_mode((self.windowWidth, self.windowHeight))
+        self._display_surf = pygame.display.set_mode(full_size)
         self.frame_per_sec = pygame.time.Clock()
 
         # Set the window caption
@@ -38,15 +48,17 @@ class App:
 
         # Load scenes
         scene_splash = SceneSplash()
-        scene_splash.size = (self.windowWidth, self.windowHeight)
+        scene_splash.size = full_size
         scene_splash.on_init()
-        self.scenes["welcome"] = scene_splash
-        self.active_scene = scene_splash
+        self.scenes["splash"] = scene_splash
 
         scene_menu = SceneMenu()
-        scene_menu.size = (self.windowWidth, self.windowHeight)
+        scene_menu.size = full_size
         scene_menu.on_init()
         self.scenes["menu"] = scene_menu
+
+        #Display First Scene
+        self.active_scene = scene_splash
 
         #TEMP
         lm = LibraryManager()
