@@ -10,7 +10,7 @@ from LibraryManager import LibraryManager
 
 
 class App:
-    windowWidth = 1152 #center =
+    windowWidth = 1152
     windowHeight = 768
     FPS = 35
 

@@ -4,22 +4,30 @@ from enum import IntEnum
 import pygame
 from pygame.locals import *
 
-from Colors import Colors
-from Scene import Scene
+import pygame_framework
+from pygame_framework.Scene import Scene
+from pygame_framework.Colors import Colors
+
+#from Colors import Colors
+#from Scene import Scene
+
 
 class MenuObjectType(IntEnum):
     LABEL = 1
     BUTTON = 2
+
 
 class MenuVOrientation(IntEnum):
     TOP = 1
     CENTER = 2
     BOTTOM = 3
 
+
 class MenuHOrientation(IntEnum):
     LEFT = 3
     CENTER = 4
     RIGHT = 5
+
 
 class SceneMenu(Scene):
     name = "menu"

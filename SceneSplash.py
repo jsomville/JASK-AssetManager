@@ -4,9 +4,10 @@ from datetime import datetime
 import pygame
 from pygame.locals import *
 
-from Colors import Colors
-from Scene import Scene
-import random
+import pygame_framework
+from pygame_framework.Scene import Scene
+from pygame_framework.Colors import Colors
+
 
 class SceneSplash(Scene):
     name = "splash"
@@ -25,7 +26,6 @@ class SceneSplash(Scene):
         self.BACKGROUND = Colors.BLACK
 
         #If font is not installed, use another one
-        #self.myFont = pygame.font.SysFont('Comic Sans MS', 20)
         self.myFont = pygame.font.SysFont('Helvetica', 20)
 
         #Load Images
@@ -77,10 +77,11 @@ class SceneSplash(Scene):
 
         yoffset = 120
         yincrement = 30
+        text_color = Colors.WHITE
 
         #Draw pygame version
         version = 'Version : ' + str(pygame.version.ver)
-        text_surface = self.myFont.render(version, False, Colors.WHITE)
+        text_surface = self.myFont.render(version, False, text_color)
         text_size = self.myFont.size(version)
         text_position = self.centerx - text_size[0]//2, self.centery + yoffset
         surface.blit(text_surface, text_position)
@@ -88,7 +89,7 @@ class SceneSplash(Scene):
         #Draw Celestial Object Library Version
         yoffset += yincrement
         version = 'CelestialObjectLibrary.json'
-        text_surface = self.myFont.render(version, False, Colors.WHITE)
+        text_surface = self.myFont.render(version, False, text_color)
         text_size = self.myFont.size(version)
         text_position = self.centerx - text_size[0] // 2, self.centery + yoffset
         surface.blit(text_surface, text_position)
@@ -96,7 +97,7 @@ class SceneSplash(Scene):
         # Draw System Map Version
         yoffset += yincrement
         version = 'SystemMap.json'
-        text_surface = self.myFont.render(version, False, Colors.WHITE)
+        text_surface = self.myFont.render(version, False, text_color)
         text_size = self.myFont.size(version)
         text_position = self.centerx - text_size[0] // 2, self.centery + yoffset
         surface.blit(text_surface, text_position)
@@ -104,7 +105,7 @@ class SceneSplash(Scene):
         # Draw Ship Library Version
         yoffset += yincrement
         version = 'ShipLibrary.json'
-        text_surface = self.myFont.render(version, False, Colors.WHITE)
+        text_surface = self.myFont.render(version, False, text_color)
         text_size = self.myFont.size(version)
         text_position = self.centerx - text_size[0] // 2, self.centery + yoffset
         surface.blit(text_surface, text_position)
