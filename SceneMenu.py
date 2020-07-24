@@ -34,7 +34,7 @@ class SceneMenu(Scene):
         #Menu definition
         lbl = dict()
         lbl["name"] = "lblMenu"
-        lbl["type"] = MenuObjectType.LABEL
+        lbl["type"] = MenuObjectType.TITLE
         lbl["text"] = "Menu"
         self.menu.append(lbl)
 
@@ -57,85 +57,29 @@ class SceneMenu(Scene):
         self.menu.append(btn)
 
     def on_init(self):
-        self.menu_util.on_init(self.menu)
-
-        menu_pos = self.menu_util.get_menu_position(self.size, len(self.menu), self.v_orientation, self.h_orientation)
-
-        x_value = menu_pos[0]
-        y_value = menu_pos[1]
-
-        for control in self.menu:
-            #Control Position
-            control["rect"] = pygame.Rect((x_value, y_value), self.theme["base_size"])
-
-            if control["type"] == MenuObjectType.LABEL:
-                control["back_color"] = self.theme["lbl_back_color"]
-                control["text_color"] = self.theme["lbl_text_color"]
-            elif control["type"] == MenuObjectType.BUTTON:
-                control["back_color"] = self.theme["btn_back_color"]
-                control["text_color"] = self.theme["btn_text_color"]
-                control["mouse_down"] = False
-
-            y_value += self.theme["base_size"][1] + 4
+        self.menu_util.on_init(self.size, self.menu, self.v_orientation, self.h_orientation)
 
         self.inited = True
 
     def on_event(self, event):
-        if event.type == pygame.MOUSEBUTTONUP:
-            for control in self.menu:
-                if control["type"] == MenuObjectType.BUTTON:
-                    if control["mouse_down"]:
-                        # This is a click
-                        control["mouse_down"] = False
-
-                        if control["name"] == "btnQuit":
-                            self.next = None
-                        else:
-                            self.goto_scene(control)
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            for control in self.menu:
-                if control["type"] == MenuObjectType.BUTTON:
-                    if control["rect"].collidepoint(event.pos):
-                        control["mouse_down"] = True
-                    else:
-                        control["mouse_down"] = False
-        elif event.type == pygame.MOUSEMOTION:
-            for control in self.menu:
-                if control["type"] == MenuObjectType.BUTTON:
-                    if control["rect"].collidepoint(event.pos):
-                        control["hover"] = True
-                        control["back_color"] = self.theme["btn_back_hover_color"]
-                    else:
-                        control["hover"] = False
-                        control["mouse_down"] = False
-                        control["back_color"] = self.theme["btn_back_color"]
-
-    def goto_scene(self, control):
-        if control["name"] == "btnShipObject":
-
-            # Send Custom Event
-            event_dict = dict()
-            event_dict["goto"] = "ship"
-            new_event = pygame.event.Event(pygame.USEREVENT, event_dict)
-            pygame.event.post(new_event)
-        elif control["name"] == "btnCelestialObject":
-
-            #************************************
-            #Create Celestial Scene
-            new_scene = SceneCelestial()
-            new_scene.size = self.size
-            new_scene.on_init()
-            self.next = new_scene
-            # ************************************
-
-            event_dict = dict()
-            event_dict["goto"] = "celestial"
-            new_event = pygame.event.Event(pygame.USEREVENT, event_dict)
-            pygame.event.post(new_event)
+        #Handle menu specific events
+        self.menu_util.on_event(event, self.menu)
 
     def on_loop(self):
-        pass
+        for control in self.menu:
+            if control["type"] == MenuObjectType.BUTTON:
+                if control["click"]:
+                    if control["name"] == "btnQuit":
+                        self.next = None
+
+                    elif control["name"] == "btnShipObject":
+                        self.fire_goto_event("ship")
+
+                    elif control["name"] == "btnCelestialObject":
+                        self.fire_goto_event("celestial")
+
+                    #Clear Click Event
+                    control["click"] = False
 
     def on_render(self, surface):
 

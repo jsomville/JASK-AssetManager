@@ -8,3 +8,5 @@ class CelestialObjectLibrary(ObjectLibrary):
 
     def __init__(self):
         pass
+
+

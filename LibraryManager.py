@@ -11,8 +11,6 @@ class LibraryManager:
     dataPath = "data/"
     celestialObjectLibraryName = "CelestialObjectLibrary.json"
 
-    celestialObjectLibrary = dict()
-
     def __init__(self):
         self.celestialObjectLibraryPath = self.dataPath + self.celestialObjectLibraryName
 

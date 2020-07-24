@@ -28,3 +28,10 @@ class Scene(pygame.Rect):
     def switch_to_scene(self, next_scene):
         self.next = next_scene
 
+    def fire_goto_event(self, where):
+
+        event_dict = dict()
+        event_dict["goto"] = where
+        new_event = pygame.event.Event(pygame.USEREVENT, event_dict)
+        pygame.event.post(new_event)
+

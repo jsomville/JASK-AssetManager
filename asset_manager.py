@@ -10,6 +10,7 @@ from pygame_framework.MenuVOrientation import MenuVOrientation
 
 from SceneSplash import SceneSplash
 from SceneMenu import SceneMenu
+from SceneCelestial import SceneCelestial
 from LibraryManager import LibraryManager
 
 
@@ -47,6 +48,7 @@ class App:
         pygame.display.set_caption("Advanced template for a pygame application")
 
         # Load scenes
+        #***************************************************
         scene_splash = SceneSplash()
         scene_splash.size = full_size
         scene_splash.on_init()
@@ -56,6 +58,12 @@ class App:
         scene_menu.size = full_size
         scene_menu.on_init()
         self.scenes["menu"] = scene_menu
+
+        scene_celestial = SceneCelestial()
+        scene_celestial.size = full_size
+        scene_celestial.on_init()
+        self.scenes["celestial"] = scene_celestial
+        # ***************************************************
 
         #Display First Scene
         self.active_scene = scene_splash
@@ -75,6 +83,11 @@ class App:
             if "goto" in event.__dict__:
                 # Scene on_event
                 print("Goto : " + event.__dict__["goto"])
+
+                if event.__dict__["goto"] in self.scenes:
+                    self.active_scene = self.scenes[event.__dict__["goto"]]
+                else:
+                    raise Exception('Scene' + event.__dict__["goto"] + " not found")
 
         #Event on active Scene
         if self.active_scene is not None:
