@@ -15,7 +15,6 @@ class MenuUtil:
     CLICK_OFFSET = 2
 
     def __init__(self):
-
         self.theme = MenuTheme()
 
         self.menu_font = pygame.font.SysFont(self.theme["font"], 30)
@@ -107,8 +106,6 @@ class MenuUtil:
                         control["click"] = True
 
     def draw_menu(self, surface, menu):
-
-
         for control in menu:
 
             # Handle Click

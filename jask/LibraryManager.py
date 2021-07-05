@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import json
-
-from .Singleton import Singleton
+from singleton3 import Singleton
 
 from .Ship import Ship
 from .Asteroid import Asteroid
