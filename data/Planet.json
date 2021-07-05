@@ -1,0 +1,54 @@
+{
+    "planets":[
+        {
+            "name" : "Cloud",
+            "type" : 1,
+            "image" : "images/planet/cloud5.png"
+        },
+        {
+            "name" : "Desert",
+            "type" : 2,
+            "image" : "images/planet/desert2.png"
+        },
+        {
+            "name" : "Dust",
+            "type" : 3,
+            "image" : "images/planet/dust2.png"
+        },
+        {
+            "name" : "Earth",
+            "type" : 4,
+            "image" : "images/planet/earth.png"
+        },
+        {
+            "name" : "Forest",
+            "type" : 5,
+            "image" : "images/planet/forest2-b.png"
+        },
+        {
+            "name" : "Gas",
+            "type" : 6,
+            "image" : "images/planet/gas6-b.png"
+        },
+        {
+            "name" : "Ice",
+            "type" : 7,
+            "image" : "images/planet/ice2.png"
+        },
+        {
+            "name" : "Lava",
+            "type" : 8,
+            "image" : "images/planet/lava5.png"
+        },
+        {
+            "name" : "Ocean",
+            "type" : 9,
+            "image" : "images/planet/ocean5-b.png"
+        },
+        {
+            "name" : "Rock",
+            "type" : 10,
+            "image" : "images/planet/rock2-b.png"
+        }
+    ]
+ }

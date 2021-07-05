@@ -1,0 +1,34 @@
+{
+    "monsters":[
+        {
+            "name" : "void_enfant",
+            "type" : 1,
+            "image" : "images/monsters/void_enfant/",
+            "nb_sprites" : 9,
+            "shield_max" : 20,
+            "shield_regen" : 0,
+            "damage_min" : 2,
+            "damage_max" : 8
+        },
+        {
+            "name" : "void_adult",
+            "type" : 1,
+            "image" : "images/monsters/void_adult/",
+            "nb_sprites" : 12,
+            "shield_max" : 40,
+            "shield_regen" : 2,
+            "damage_min" : 8,
+            "damage_max" : 15
+        },
+        {
+            "name" : "archon",
+            "type" : 1,
+            "image" : "images/monsters/archon/",
+            "nb_sprites" : 2,
+            "shield_max" : 30,
+            "shield_regen" : 1,
+            "damage_min" : 6,
+            "damage_max" : 12
+        }
+    ]
+ }

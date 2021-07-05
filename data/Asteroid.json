@@ -1,0 +1,95 @@
+{
+    "asteroids": [
+        {
+            "name": "rock_small",
+            "type": 1,
+            "image": "images/asteroid/rock_small.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "rock_medium",
+            "type": 1,
+            "image": "images/asteroid/rock_medium.png",
+            "min": 250,
+            "max": 400
+        },
+        {
+            "name": "rock_large",
+            "type": 1,
+            "image": "images/asteroid/rock_large.png",
+            "min": 400,
+            "max": 1000
+        },
+        {
+            "name": "gold",
+            "type": 3,
+            "image": "images/asteroid/gold.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "iron",
+            "type": 4,
+            "image": "images/asteroid/iron.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "lead",
+            "type": 5,
+            "image": "images/asteroid/lead.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "metal_small",
+            "type": 2,
+            "image": "images/asteroid/metal_small.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "metal_medium",
+            "type": 2,
+            "image": "images/asteroid/metal_medium.png",
+            "min": 250,
+            "max": 400
+        },
+        {
+            "name": "metal_large",
+            "type": 2,
+            "image": "images/asteroid/metal_large.png",
+            "min": 400,
+            "max": 1000
+        },
+        {
+            "name": "silicon",
+            "type": 6,
+            "image": "images/asteroid/silicon.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "silver",
+            "type": 7,
+            "image": "images/asteroid/silver.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "titanium",
+            "type": 8,
+            "image": "images/asteroid/titanium.png",
+            "min": 100,
+            "max": 250
+        },
+        {
+            "name": "yottrite",
+            "type": 9,
+            "image": "images/asteroid/yottrite.png",
+            "min": 100,
+            "max": 250
+        }
+    ]
+}

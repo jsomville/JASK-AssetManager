@@ -1,0 +1,32 @@
+{
+    "stations":[
+        {
+            "name" : "Station1",
+            "image" : "images/station/station3.png"
+        },
+        {
+            "name" : "Station2",
+            "image" : "images/station/station5.png"
+        },
+        {
+            "name" : "Station3",
+            "image" : "images/station/station8.png"
+        },
+        {
+            "name" : "Station4",
+            "image" : "images/station/station11.png"
+        },
+        {
+            "name" : "Station5",
+            "image" : "images/station/station12.png"
+        },
+        {
+            "name" : "Station6",
+            "image" : "images/station/station14.png"
+        },
+        {
+            "name" : "Station6",
+            "image" : "images/station/station15.png"
+        }
+    ]
+ }

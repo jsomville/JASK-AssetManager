@@ -1,0 +1,24 @@
+{
+    "stars":[
+        {
+            "name" : "A",
+            "type" : 1,
+            "image" : "images/star/a0.png"
+        },
+        {
+            "name" : "B",
+            "type" : 2,
+            "image" : "images/star/b5.png"
+        },
+        {
+            "name" : "F",
+            "type" : 3,
+            "image" : "images/star/f5-old.png"
+        },
+        {
+            "name" : "G",
+            "type" : 4,
+            "image" : "images/star/g0.png"
+        }
+    ]
+ }

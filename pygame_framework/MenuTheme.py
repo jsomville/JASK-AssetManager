@@ -11,7 +11,8 @@ class MenuTheme(dict):
 
         self["base_size"] = (200, 40)
         self["space"] = 10
-        self["font"] = 'Comic Sans MS'
+        self["font"] = 'arial'
+        #self["font"] = 'Comic Sans MS'
 
         self["heading"] = dict()
         self["heading"][1] = 30

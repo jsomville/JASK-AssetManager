@@ -1,0 +1,25 @@
+ {
+    "ships":[
+        {
+            "name" : "berserker",
+            "type" : 1,
+            "image" : "images/ships/berserker.png",
+            "shield_max" : 20,
+            "shield_regen" : 1,
+            "speed_max" : 10,
+            "damage_min" : 2,
+            "damage_max" : 8
+
+        },
+        {
+            "name":"Spike",
+            "type":1,
+            "image":"images/ships/spike.png",
+            "shield_max" : 10,
+            "shield_regen" : 1,
+            "speed_max" : 8,
+            "damage_min" : 1,
+            "damage_max" : 6
+        }
+    ]
+ }

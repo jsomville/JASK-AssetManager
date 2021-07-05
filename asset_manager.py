@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
 from enum import Enum
 from datetime import datetime
+
 import pygame
 from pygame.locals import *
 
 from pygame_framework.MenuTheme import MenuTheme
 from pygame_framework.MenuHOrientation import MenuHOrientation
 from pygame_framework.MenuVOrientation import MenuVOrientation
+from pygame_framework.Colors import Colors
 
 from SceneSplash import SceneSplash
 from SceneMenu import SceneMenu
-from SceneCelestial import SceneCelestial
-from LibraryManager import LibraryManager
+from SceneAsteroid import SceneAsteroid
+from SceneShip import SceneShip
+from ScenePlanet import ScenePlanet
+from SceneStar import SceneStar
+from SceneStation import SceneStation
+from SceneMonster import SceneMonster
 
+from jask.LibraryManager import LibraryManager
 
 class App:
-    FPS = 35
+    FPS = 20
 
     # Handle scenes
     scenes = dict()
@@ -31,7 +38,8 @@ class App:
         self._running = True
         self._display_surf = None
         self.image = None
-        self.frame_per_sec = None
+
+        self.clock =  pygame.time.Clock()
 
 
     def on_init(self):
@@ -42,33 +50,59 @@ class App:
         # pygame initialisation
         pygame.init()
         self._display_surf = pygame.display.set_mode(full_size)
-        self.frame_per_sec = pygame.time.Clock()
 
         # Set the window caption
-        pygame.display.set_caption("Advanced template for a pygame application")
+        pygame.display.set_caption("JASK - Asset Manager")
 
         # Load scenes
         #***************************************************
-        scene_splash = SceneSplash()
-        scene_splash.size = full_size
-        scene_splash.on_init()
-        self.scenes["splash"] = scene_splash
+        new_scene = SceneSplash()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["splash"] = new_scene
 
-        scene_menu = SceneMenu()
-        scene_menu.size = full_size
-        scene_menu.on_init()
-        self.scenes["menu"] = scene_menu
+        new_scene = SceneMenu()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["menu"] = new_scene
 
-        scene_celestial = SceneCelestial()
-        scene_celestial.size = full_size
-        scene_celestial.on_init()
-        self.scenes["celestial"] = scene_celestial
+        new_scene = SceneShip()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["ship"] = new_scene
+
+        new_scene = SceneAsteroid()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["asteroid"] = new_scene
+
+        new_scene = ScenePlanet()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["planet"] = new_scene
+
+        new_scene = SceneStar()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["star"] = new_scene
+
+        new_scene = SceneMonster()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["monster"] = new_scene
+
+        new_scene = SceneStation()
+        new_scene.size = full_size
+        new_scene.on_init()
+        self.scenes["station"] = new_scene
         # ***************************************************
 
         #Display First Scene
-        self.active_scene = scene_splash
+        self.active_scene = self.scenes["splash"]
 
-        #TEMP
+        self.debug_font = pygame.font.SysFont("Arial", 14)
+
+        #Load Library Content
         lm = LibraryManager()
 
     def on_event(self, event):
@@ -120,6 +154,16 @@ class App:
         if self.active_scene is not None:
             self.active_scene.on_render(self._display_surf)
 
+        #Display actual FPS
+        text = str(int(self.clock.get_fps()))
+        self.draw_text(text, self.debug_font, Colors.WHITE, 100, 100)
+    
+    def draw_text(self, text, font, text_col, x, y):
+        """Draw Text Function"""
+        img = font.render(text, True, text_col)
+        self._display_surf.blit(img, (x, y))
+
+
     def on_cleanup(self):
         """Function to handle app uninitialized"""
         pygame.quit()
@@ -141,10 +185,10 @@ class App:
             # Render code
             self.on_render()
 
-            self.frame_per_sec.tick(self.FPS)
+            #Ensure FPS is respected
+            self.clock.tick(self.FPS)
 
         self.on_cleanup()
-
 
 if __name__ == "__main__":
     """Program entry function"""

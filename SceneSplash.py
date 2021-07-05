@@ -15,7 +15,7 @@ class SceneSplash(Scene):
     rect_list = list()
     exit = False
     splash_timeout = None
-    DISPLAY_TIME = 5 #in seconds
+    DISPLAY_TIME = 2 #in seconds
 
     def __init__(self):
         Scene.__init__(self)

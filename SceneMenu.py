@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import pygame
 from pygame.locals import *
 
@@ -11,12 +10,10 @@ from pygame_framework.MenuTheme import MenuTheme
 from pygame_framework.MenuUtil import MenuUtil
 from pygame_framework.MenuObjectType import MenuObjectType
 
-from SceneCelestial import SceneCelestial
-
-
 class SceneMenu(Scene):
     name = "menu"
     menu = list()
+    fast_menu = dict()
 
     v_orientation = MenuVOrientation.CENTER
     h_orientation = MenuHOrientation.CENTER
@@ -37,18 +34,55 @@ class SceneMenu(Scene):
         lbl["type"] = MenuObjectType.TITLE
         lbl["text"] = "Menu"
         self.menu.append(lbl)
-
-        btn = dict()
-        btn["name"] = "btnCelestialObject"
-        btn["type"] = MenuObjectType.BUTTON
-        btn["text"] = "Celestial Object"
-        self.menu.append(btn)
-
+        
         btn = dict()
         btn["name"] = "btnShipObject"
         btn["type"] = MenuObjectType.BUTTON
-        btn["text"] = "Ship Object"
+        btn["text"] = "Ships"
+        btn["goto"] = "ship"
         self.menu.append(btn)
+        self.fast_menu[btn["name"]] = btn
+
+        btn = dict()
+        btn["name"] = "btnAsteroidObject"
+        btn["type"] = MenuObjectType.BUTTON
+        btn["text"] = "Asteroids"
+        btn["goto"] = "asteroid"
+        self.menu.append(btn)
+        self.fast_menu[btn["name"]] = btn
+
+        btn = dict()
+        btn["name"] = "btnPlanetObject"
+        btn["type"] = MenuObjectType.BUTTON
+        btn["text"] = "Planet"
+        btn["goto"] = "planet"
+        self.menu.append(btn)
+        self.fast_menu[btn["name"]] = btn
+
+        btn = dict()
+        btn["name"] = "btnStarObject"
+        btn["type"] = MenuObjectType.BUTTON
+        btn["text"] = "Star"
+        btn["goto"] = "star"
+        self.menu.append(btn)
+        self.fast_menu[btn["name"]] = btn
+
+        btn = dict()
+        btn["name"] = "btnStationObject"
+        btn["type"] = MenuObjectType.BUTTON
+        btn["text"] = "Station"
+        btn["goto"] = "station"
+        self.menu.append(btn)
+        self.fast_menu[btn["name"]] = btn
+
+        btn = dict()
+        btn["name"] = "btnMonsterObject"
+        btn["type"] = MenuObjectType.BUTTON
+        btn["text"] = "Monster"
+        btn["goto"] = "monster"
+        self.menu.append(btn)
+        self.fast_menu[btn["name"]] = btn
+
 
         btn = dict()
         btn["name"] = "btnQuit"
@@ -71,12 +105,9 @@ class SceneMenu(Scene):
                 if control["click"]:
                     if control["name"] == "btnQuit":
                         self.next = None
-
-                    elif control["name"] == "btnShipObject":
-                        self.fire_goto_event("ship")
-
-                    elif control["name"] == "btnCelestialObject":
-                        self.fire_goto_event("celestial")
+                    else:
+                        if control["name"] in self.fast_menu:
+                            self.fire_goto_event(control["goto"])
 
                     #Clear Click Event
                     control["click"] = False
