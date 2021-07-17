@@ -2,6 +2,8 @@
 
 This project is an Asset Manager tool for JASK (Just another Space Game).
 
+![application_template_screenshot](jask.png)
+
 This tool allow: 
  - Browse and view config for Planets, Star, Ship, Monsters, Starbase
  
