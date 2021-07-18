@@ -1,5 +1,7 @@
  #!/usr/bin/env python3
 from enum import IntEnum
+import math
+
 import pygame
 from pygame.locals import *
 
@@ -7,6 +9,7 @@ from pygame_framework.Colors import Colors
 
 from .Projectile import Projectile
 from .Projectile import ProjectileType
+from .MathUtil import MathUtil
 
 class ShipClass(IntEnum):
     NONE = 0
@@ -219,8 +222,12 @@ class Ship(pygame.sprite.Sprite):
         self.handle_power()
 
     def shoot(self):
-        x = self.rect.centerx
-        y = self.rect.top
+        dist = self.rect.height // 2
+
+        rad_angle = self.angle / 360 * MathUtil.TWO_PI
+
+        x = self.rect.centerx - math.sin(rad_angle) * dist
+        y = self.rect.centery - math.cos(rad_angle) * dist
 
         projectile = Projectile(ProjectileType.ION_BOLT, x, y, self.angle)
         self.projectiles.append(projectile)
