@@ -9,6 +9,7 @@ from pygame_framework.MenuTheme import MenuTheme
 from pygame_framework.MenuHOrientation import MenuHOrientation
 from pygame_framework.MenuVOrientation import MenuVOrientation
 from pygame_framework.Colors import Colors
+from pygame_framework.Util import Util
 
 from .jask.LibraryManager import LibraryManager
 
@@ -157,13 +158,12 @@ class App:
             self.active_scene.on_render(self._display_surf)
 
         #Display actual FPS
-        text = str(int(self.clock.get_fps()))
-        self.draw_text(text, self.debug_font, Colors.WHITE, 100, 100)
-    
-    def draw_text(self, text, font, text_col, x, y):
-        """Draw Text Function"""
-        img = font.render(text, True, text_col)
-        self._display_surf.blit(img, (x, y))
+        text = f"FPS : {int(self.clock.get_fps())}"
+        Util().draw_text(self._display_surf, text, self.debug_font, Colors.WHITE, 20, 20)
+
+        # Display update instruction
+        rect = self._display_surf.get_rect()
+        pygame.display.update(rect)
 
 
     def on_cleanup(self):

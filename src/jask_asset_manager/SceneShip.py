@@ -12,6 +12,7 @@ from pygame_framework.MenuUtil import MenuUtil
 from pygame_framework.MenuObjectType import MenuObjectType
 
 from .jask.LibraryManager import LibraryManager
+from .jask.ShipDash import ShipDash
 
 class SceneShip(Scene):
     
@@ -27,6 +28,7 @@ class SceneShip(Scene):
         self.menu_util = MenuUtil()
 
         self.ship = None
+        self.ship_dash = None
 
         # Menu definition
         lbl = dict()
@@ -69,7 +71,6 @@ class SceneShip(Scene):
 
         #Library and Objects
         self.library = LibraryManager().ships
-        self.index = 0
         
 
     def on_init(self):
@@ -77,7 +78,9 @@ class SceneShip(Scene):
 
         self.inited = True
 
-        self.update_object()
+        #Select first ship
+        self.index = 0
+        self.load_ship()
 
     def on_event(self, event):
         self.menu_util.on_event(event, self.menu)
@@ -89,7 +92,7 @@ class SceneShip(Scene):
                 if event.key == pygame.K_DOWN:
                     self.ship.power_down()
                 if event.key == pygame.K_SPACE:
-                    print("space --> shoot")
+                    self.ship.shoot()
                 if event.key == pygame.K_m:
                     print("M key --> messile | mine")
                 if event.key == pygame.K_b:
@@ -109,13 +112,13 @@ class SceneShip(Scene):
                         self.index += 1
                         if self.index >= len(self.library):
                             self.index = 0
-                        self.update_object()
+                        self.load_ship()
 
                     elif control["name"] == "btnPrevious":
                         self.index -= 1
                         if self.index < 0:
                             self.index = len(self.library) - 1
-                        self.update_object()
+                        self.load_ship()
 
         #Handle ship rotation
         if self.ship != None :
@@ -124,6 +127,8 @@ class SceneShip(Scene):
                 self.ship.turn_left()
             if keys[K_RIGHT]:
                 self.ship.turn_right()
+
+            self.ship.on_loop()
 
     def on_render(self, surface):
         # Fill Background color
@@ -137,22 +142,36 @@ class SceneShip(Scene):
             #print("draw ship")
             self.ship.draw(surface)
 
-        # Display update instruction
-        rect = surface.get_rect()
-        pygame.display.update(rect)
+        if self.ship_dash != None:
+            self.ship_dash.draw(surface)
 
-    def update_object(self):
+        # Display update instruction
+        #rect = surface.get_rect()
+        #pygame.display.update(rect)
+
+    def load_ship(self):
+        #Load Ship
         self.ship = self.library[self.index]
         
         self.item["text"] = self.ship.name
 
+        #At center screen 
         x = self.size[0] // 2
         y = self.size[1] // 2
 
+        print(f"height at init:{self.size[0]}")
+
+        #reset ship values
         angle = 0
         speed = 0
         shield = self.ship.shield_max
         self.ship.update((x,y), angle, speed, shield)
+
+        if self.ship_dash == None:
+            dash_centery = self.size[1] - 100 #ship dash 
+            self.ship_dash = ShipDash(x, dash_centery)
+
+        self.ship_dash.set_ship(self.ship)
 
 
 
