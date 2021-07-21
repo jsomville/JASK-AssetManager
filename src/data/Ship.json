@@ -6,10 +6,28 @@
             "image" : "images/ships/berserker.png",
             "shield_max" : 20,
             "shield_regen" : 1,
+            "shield_delay" : 600,
+            "turn":3,
             "speed_max" : 10,
+            "accell": 2,
             "damage_min" : 2,
-            "damage_max" : 8
+            "damage_max" : 8,
+            "fire_delay" : 600
 
+        },
+        {
+            "name":"Boxwing",
+            "type":2,
+            "image":"images/ships/boxwing.png",
+            "shield_max" : 12,
+            "shield_regen" : 4,
+            "shield_delay" : 2000,
+            "turn":1,
+            "speed_max" : 8,
+            "accell": 1,
+            "damage_min" : 1,
+            "damage_max" : 6,
+            "fire_delay" : 1000
         },
         {
             "name":"Spike",
@@ -17,9 +35,13 @@
             "image":"images/ships/spike.png",
             "shield_max" : 10,
             "shield_regen" : 1,
+            "shield_delay" : 600,
+            "turn":3,
             "speed_max" : 8,
+            "accell": 2,
             "damage_min" : 1,
-            "damage_max" : 6
+            "damage_max" : 6,
+            "fire_delay" : 600
         }
     ]
  }

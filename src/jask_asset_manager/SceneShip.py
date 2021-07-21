@@ -48,7 +48,6 @@ class SceneShip(Scene):
         btn["name"] = "N/A"
         btn["type"] = MenuObjectType.CONTAINER
         btn["content"] = list()
-
         self.menu.append(btn)
 
         btn = dict()
@@ -71,6 +70,7 @@ class SceneShip(Scene):
 
         #Library and Objects
         self.library = LibraryManager().ships
+        self.map = LibraryManager().map
         
 
     def on_init(self):
@@ -82,6 +82,8 @@ class SceneShip(Scene):
         self.index = 0
         self.load_ship()
 
+        self.ship
+
     def on_event(self, event):
         self.menu_util.on_event(event, self.menu)
 
@@ -91,8 +93,8 @@ class SceneShip(Scene):
                     self.ship.power_up()
                 if event.key == pygame.K_DOWN:
                     self.ship.power_down()
-                if event.key == pygame.K_SPACE:
-                    self.ship.shoot()
+                if event.key == pygame.K_e:
+                    self.ship.toggle_weapon()
                 if event.key == pygame.K_m:
                     print("M key --> messile | mine")
                 if event.key == pygame.K_b:
@@ -127,12 +129,18 @@ class SceneShip(Scene):
                 self.ship.turn_left()
             if keys[K_RIGHT]:
                 self.ship.turn_right()
+            if keys[K_SPACE]:
+                self.ship.shoot()
 
             self.ship.on_loop()
+
 
     def on_render(self, surface):
         # Fill Background color
         surface.fill(self.BACKGROUND)
+
+        #Draw Map
+        self.map.draw(surface)
 
         #Draw Menu
         self.menu_util.draw_menu(surface, self.menu)
@@ -142,12 +150,10 @@ class SceneShip(Scene):
             #print("draw ship")
             self.ship.draw(surface)
 
+        #Draw Dash
         if self.ship_dash != None:
             self.ship_dash.draw(surface)
 
-        # Display update instruction
-        #rect = surface.get_rect()
-        #pygame.display.update(rect)
 
     def load_ship(self):
         #Load Ship
@@ -156,22 +162,29 @@ class SceneShip(Scene):
         self.item["text"] = self.ship.name
 
         #At center screen 
-        x = self.size[0] // 2
-        y = self.size[1] // 2
-
-        print(f"height at init:{self.size[0]}")
+        centerx = self.size[0] // 2
+        centery = self.size[1] // 2
 
         #reset ship values
         angle = 0
         speed = 0
-        shield = self.ship.shield_max
-        self.ship.update((x,y), angle, speed, shield)
+        shield = 0 #self.ship.shield_max
+        self.ship.update((centerx, centery), angle, speed, shield)
 
         if self.ship_dash == None:
             dash_centery = self.size[1] - 100 #ship dash 
-            self.ship_dash = ShipDash(x, dash_centery)
+            self.ship_dash = ShipDash(centerx, dash_centery)
 
+        #Ship starting position on map
+        x = 50
+        y = 50
+        self.ship.x = x
+        self.ship.y = y
+
+        #Set dash references
+        self.map.set_ship(self.ship)
         self.ship_dash.set_ship(self.ship)
+        self.ship_dash.set_map(self.map)
 
 
 

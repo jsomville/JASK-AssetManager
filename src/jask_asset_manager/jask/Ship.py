@@ -12,63 +12,113 @@ from .Projectile import ProjectileType
 from .MathUtil import MathUtil
 
 class ShipClass(IntEnum):
-    NONE = 0
     FIGHTER = 1
     HAULER = 2
     FREIGHTER = 3
     CARRIER = 4
 
+
+class ShipPowerForce(IntEnum):
+    NONE = 0
+    TINY = 1
+    SMALL = 2
+    MEDIUM = 3
+    LARGE = 4
+    HUGE = 5
+
+
+class ShipEngineType(IntEnum):
+    ION = 1
+
+
 class Ship(pygame.sprite.Sprite):
 
-    def __init__(self, name, type, img, shield_max, shield_regen, speed_max, damage_min, damage_max):
+    def __init__(self, name, type, img, shield_max, shield_regen, shield_delay, speed_max, damage_min, damage_max, turn, accell, fire_delay, effects):
         pygame.sprite.Sprite.__init__(self)
 
+        #Properties
         self.name = name
         self.type = type 
-
-        #Properties
         self.shield_max = shield_max
-        self.shield_regen = shield_regen
+        self.shield_regen = shield_regen # per shield_delay
+        self.shield_delay = shield_delay
         self.speed_max = speed_max
         self.damage_min = damage_min
         self.damage_max = damage_max
+        self.turn = turn
+        self.accell = accell
+        self.fire_delay = fire_delay
 
         #Load image
         image = pygame.image.load(img).convert_alpha()
         self.image = image
         self.rect = self.image.get_rect()
 
-        #Ship Default Values
-        self.shield = self.shield_max
-        self.angle = 0
-        self.speed = 0
-        self.pos = (0,0)
+        #Effects
+        self.effects = effects
 
         #To improve
-        self.angle_increment = 3
-        self.speed_increment = 1
         self.scale = 1
         self.power_counter = 0
         self.power_counter_max = 5
-        self.power_index = 0
-        self.power_force = None
         self.power_offset =  8
+        self.engine_type = ShipEngineType.ION
+
+        #Ship Default Values
+        self.shield = 0
+        self.angle = 0
+        self.speed = 0
+        self.pos = (0,0)
+        self.next_shield_recharge = pygame.time.get_ticks() + self.shield_delay
+        self.next_fire = pygame.time.get_ticks() + self.fire_delay
+        self.enable_weapon = False
+        self.power_force = None
+        self.power_image_index = 0
+        self.x = 0
+        self.y = 0
 
         #Projectiles
         self.projectiles = list()
-
-        #Init effects
-        self.init_effects() 
     
+
     def update(self, pos, angle, speed, shield):
         self.rect.center = pos
 
         self.angle = angle
         self.speed = speed
         self.shield = shield
-
-        print(f"shield : {self.shield}")
     
+
+    def on_loop(self):
+        #Ship Position
+        self.rad_angle = self.angle / 360 * MathUtil.TWO_PI
+        self.x = self.x - math.sin(self.rad_angle) * (self.speed / 100)
+        self.y = self.y - math.cos(self.rad_angle) * (self.speed / 100)
+
+        #Power Ion switching
+        self.power_counter += 1
+        if self.power_counter >= self.power_counter_max:
+            self.power_counter = 0
+            if self.power_image_index == 1:
+                self.power_image_index = 0
+            else:
+                self.power_image_index = 1
+
+        #Handle projectiles
+        for projectile in self.projectiles:
+            projectile.on_loop()
+            #if projectile.life > projectile.life_max:
+            if projectile.distance >= 200:
+                self.projectiles.pop(self.projectiles.index(projectile))
+
+        #Shield Recharge
+        if pygame.time.get_ticks() > self.next_shield_recharge:
+            self.next_shield_recharge = pygame.time.get_ticks() + self.shield_delay
+            if self.shield < self.shield_max:
+                self.shield += self.shield_regen
+                if self.shield > self.shield_max:
+                    self.shield = self.shield_max
+
 
     def draw(self, surface):
 
@@ -94,108 +144,46 @@ class Ship(pygame.sprite.Sprite):
         #Handle projectiles
         for projectile in self.projectiles:
             projectile.draw(surface)
+
     
-    def on_loop(self):
-        #Power Ion switching
-        self.power_counter += 1
-        if self.power_counter >= self.power_counter_max:
-            self.power_counter = 0
-
-            if self.power_index == 1:
-                self.power_index = 0
-            else:
-                self.power_index = 1
-
-        #Handle projectiles
-        for projectile in self.projectiles:
-            projectile.on_loop()
-            if projectile.life > projectile.life_max:
-                self.projectiles.pop(self.projectiles.index(projectile))    
-
-
-    #******************************************************
-    #Could be improved
-    def init_effects(self):
-        self.effects = dict()
-
-         #ion Flare
-        self.effects['ion flare'] = dict()
-        self.effects['ion flare']["tiny"] = list()
-
-        img = "images/effects/ion flare/tiny/tiny0.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["tiny"].append(image)
-
-        img = "images/effects/ion flare/tiny/tiny1.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["tiny"].append(image)
-
-        self.effects['ion flare']["small"] = list()
-        
-        img = "images/effects/ion flare/small/small0.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["small"].append(image)
-
-        img = "images/effects/ion flare/small/small1.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["small"].append(image)
-
-        self.effects['ion flare']["medium"] = list()
-        
-        img = "images/effects/ion flare/medium/medium0.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["medium"].append(image)
-
-        img = "images/effects/ion flare/medium/medium1.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["medium"].append(image)
-
-        self.effects['ion flare']["large"] = list()
-        
-        img = "images/effects/ion flare/large/large0.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["large"].append(image)
-
-        img = "images/effects/ion flare/large/large1.png"
-        image = pygame.image.load(img).convert_alpha()
-        self.effects['ion flare']["large"].append(image)
 
 
     def draw_power(self, surface, yoffset):
-        if self.power_force != None :
+        if self.speed > 0:
+            self.get_power_force_from_speed()
+
             render_rect = surface.get_rect()
 
             #Render effect
-            image = self.effects['ion flare'][self.power_force][self.power_index]
+            image = self.effects[self.engine_type][self.power_force][self.power_image_index]
             rect = image.get_rect()
             rect.center = (render_rect.centerx, yoffset)
             surface.blit(image, rect)
 
     #******************************************************
     #Could be improved....
-    def handle_power(self):
+    def get_power_force_from_speed(self):
         if self.speed == 0:
-            self.power_index = 0
+            self.power_image_index = 0
             self.power_force = None
         elif self.speed < 3:
-            self.power_force = "tiny"
+            self.power_force = ShipPowerForce.TINY
         elif self.speed < 7:
-            self.power_force = "small"
+            self.power_force = ShipPowerForce.SMALL
         elif self.speed < 11:
-            self.power_force = "medium"
+            self.power_force = ShipPowerForce.MEDIUM
         elif self.speed < 20:
-            self.power_force = "large"
-        elif self.speed < 25:
-            self.power_force = "huge"
-
+            self.power_force = ShipPowerForce.LARGE
+        elif self.speed > 25:
+            self.power_force = ShipPowerForce.HUGE
 
     def turn_left(self):
-        self.angle += self.angle_increment 
+        self.angle += self.turn 
         if self.angle >= 360:
             self.angle = 0
 
     def turn_right(self):
-        self.angle -= self.angle_increment
+        self.angle -= self.turn
         if self.angle <= -360:
             self.angle = 0
 
@@ -203,33 +191,34 @@ class Ship(pygame.sprite.Sprite):
         self.angle = 0
 
     def power_up(self):
-        self.speed += self.speed_increment
+        self.speed += self.accell
         if self.speed > self.speed_max:
             self.speed = self.speed_max
 
-        self.handle_power()
-
     def power_down(self):
         #TO TAKE CARE : Going backward....
-        self.speed -= self.speed_increment
+        self.speed -= self.accell
         if self.speed < 0:
             self.speed = 0
 
-        self.handle_power()
-
     def brake(self):
         self.speed = 0
-        self.handle_power()
 
     def shoot(self):
-        dist = self.rect.height // 2
+        if self.enable_weapon :
+            if pygame.time.get_ticks() > self.next_fire:
+                self.next_fire = pygame.time.get_ticks() + self.fire_delay
 
-        rad_angle = self.angle / 360 * MathUtil.TWO_PI
+                dist = self.rect.height // 2
 
-        x = self.rect.centerx - math.sin(rad_angle) * dist
-        y = self.rect.centery - math.cos(rad_angle) * dist
+                x = self.rect.centerx - math.sin(self.rad_angle) * dist
+                y = self.rect.centery - math.cos(self.rad_angle) * dist
 
-        projectile = Projectile(ProjectileType.ION_BOLT, x, y, self.angle)
-        self.projectiles.append(projectile)
+                projectile = Projectile(ProjectileType.ION_BOLT, x, y, self.angle)
+                self.projectiles.append(projectile)
+
+    def toggle_weapon(self):
+        self.enable_weapon = not self.enable_weapon
+
 
 

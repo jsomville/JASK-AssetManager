@@ -11,16 +11,20 @@ class ProjectileType(IntEnum):
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, type, x, y, angle):
         self.x = x
-        self.posix = x
         self.y = y
-        self.posiy = y
-        self.angle = angle
         self.type = type
+        self.angle = angle
+        self.rad_angle = (self.angle / 360) * MathUtil.TWO_PI
 
+        self.posix = x
+        self.posiy = y
+        self.startx = x
+        self.starty = y
+        self.distance = 0
+
+        #To improve
         self.speed = 2
-
-        self.life = 1
-        self.life_max = 60
+        self.max_dist = 300
 
         #Load Images
         self.projectile = dict()
@@ -49,13 +53,14 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
 
-    def on_loop(self):
-        self.life += 1
-        
-        rad_angle = (self.angle / 360) * MathUtil.TWO_PI
 
-        self.posix = self.posix - math.sin(rad_angle) * self.speed
-        self.posiy = self.posiy - math.cos(rad_angle) * self.speed
+    def on_loop(self):
+        #Get the distance made by projectile
+        self.distance = math.sqrt( (self.x - self.startx)**2 + (self.y - self.starty)**2 )
+
+        #To have a decimal calculation of the position (a small angle dosent move)
+        self.posix = self.posix - math.sin(self.rad_angle) * self.speed
+        self.posiy = self.posiy - math.cos(self.rad_angle) * self.speed
 
         self.x = int(self.posix)
         self.y = int(self.posiy)

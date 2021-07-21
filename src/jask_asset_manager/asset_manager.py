@@ -117,7 +117,7 @@ class App:
             #Switch scene event
             if "goto" in event.__dict__:
                 # Scene on_event
-                print("Goto : " + event.__dict__["goto"])
+                #print("Goto : " + event.__dict__["goto"])
 
                 if event.__dict__["goto"] in self.scenes:
                     self.active_scene = self.scenes[event.__dict__["goto"]]
@@ -137,17 +137,15 @@ class App:
 
             #Active scene is cleared
             if self.active_scene.next is None:
-                print(self.active_scene.name)
                 #Handle splash to menu
                 if self.active_scene.name == "splash":
-                    print("Switch to Menu Scene")
                     self.active_scene = self.scenes["menu"]
 
             self.active_scene = self.active_scene.next
 
             #Quit application if no more active scenes
             if self.active_scene is None:
-                print ("quit app, no more scene to render")
+                print ("Quitting application")
                 self._running = False
 
     def on_render(self):
